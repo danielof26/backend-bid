@@ -19,4 +19,21 @@ routerItems.get("/:id", (req,res) => {
     res.json(item)
 })
 
+routerItems.post("/", (req,res) => {
+    let description = req.body.description
+    if(description == undefined){
+        res.status(400).json({error: "no description in body"})
+        return   
+    }
+
+    let lastId = items[items.length-1].id
+    items.push({
+        id: lastId+1,
+        userId: req.infoApiKey.id,
+        description: description
+    })
+
+    res.json({added: lastId+1})
+})
+
 module.exports = routerItems
